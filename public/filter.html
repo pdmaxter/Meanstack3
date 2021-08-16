@@ -1,0 +1,208 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="scotchTodo">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+	<title>AI DATA</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		html 					{ overflow-y:scroll; }
+		body 					{ padding-top:0px; }
+		#todo-list 				{ margin-bottom:30px; }
+		#todo-form 	 			{ margin-bottom:50px; }
+		table, th, td {
+  			border: 1px solid black;
+  			border-collapse: collapse;
+			}
+		th, td {
+		  padding: 5px;
+		  text-align: left;
+		}
+	</style>
+
+	<!-- SPELLS -->
+	<!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- Angular Material Library -->
+ 
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+	<script src="js/controllers/filter.js"></script> <!-- load up our controller -->
+	<script src="js/services/todos.js"></script> <!-- load our todo service -->
+	<script src="js/core.js"></script> <!-- load our main application -->
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.567.0.min.js"></script>
+
+
+
+</head>
+<!-- SET THE CONTROLLER -->
+<body ng-controller="mainController">
+	<div class="container">
+
+		<!-- HEADER AND TODO COUNT -->
+			<div style="width: 100%" class="row">
+				<h3 style="float: left;">Total Videos <b style="color: blue">{{ states.totalvideo }}</b> &nbsp;&nbsp;</h3>
+				<h3 style="float: left;">Total Done <b style="color: blue">{{ states.donevideo }}</b> &nbsp;&nbsp;</h3>
+				<h3 style="float: left;">Total Remaining <b style="color: blue">{{ states.remainingvideo }} &nbsp;&nbsp;</b></h3>
+				<h3 style="float: left;">Total Discarded <b style="color: blue">{{ states.discardvideo }}</b></h3>
+				
+			</div>
+		<div class="row">
+			<table style="border-style: none;">
+				<tr>
+					<td>
+						<select class="form-control" ng-model="filename" ng-change="changeFileName()">
+                        	<option value="06022020_Input_Sheet_Chandragupta.xlsx">06022020_Input_Sheet_Chandragupta.xlsx</option> 
+							  <option value="06022020_Input_Sheet_Indian Idol_S11.xlsx">06022020_Input_Sheet_Indian Idol_S11.xlsx</option> 
+							  <option value="06022020_Input_Sheet_Ishaaron_Ishaaron.xlsx">06022020_Input_Sheet_Ishaaron_Ishaaron.xlsx</option> 
+							  <option value="20042020_Input_Sheet_SET (1).xlsx">20042020_Input_Sheet_SET (1).xlsx</option> 
+							  <option value="06022020_Input_Sheet_Porus.xlsx">06022020_Input_Sheet_Porus.xlsx</option> 
+							  <option value="06022020_Input_Sheet_TKSS_S1S2.xlsx">06022020_Input_Sheet_TKSS_S1S2.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Chidiya Ghar.xlsx">29022020_Input_Sheet_Chidiya Ghar.xlsx</option> 
+							  <option value=">29022020_Input_Sheet_Dr. Pran Lele.xlsx">29022020_Input_Sheet_Dr. Pran Lele.xlsx</option> 
+							  <option value="29022020_Input_Sheet_FIR.xlsx">29022020_Input_Sheet_FIR.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Gopalbhar_Bengali.xlsx">29022020_Input_Sheet_Gopalbhar_Bengali.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Gopalbhar_Hindi.xlsx">29022020_Input_Sheet_Gopalbhar_Hindi.xlsx</option>
+							  <option value="29022020_Input_Sheet_Khatmal-E-Ishque.xlsx">29022020_Input_Sheet_Khatmal-E-Ishque.xlsx</option>
+							  <option value="29022020_Input_Sheet_Lapataganj_Ek_Baar_Phir.xlsx">29022020_Input_Sheet_Lapataganj_Ek_Baar_Phir.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Mahabali_Hanumaan.xlsx">29022020_Input_Sheet_Mahabali_Hanumaan.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Mahabharat.xlsx">29022020_Input_Sheet_Mahabharat.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Nix.xlsx">29022020_Input_Sheet_Nix.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Nut_Boltu.xlsx">29022020_Input_Sheet_Nut_Boltu.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Nut_Boltu_Hindi.xlsx">29022020_Input_Sheet_Nut_Boltu_Hindi.xlsx</option> 
+							  <option value="229022020_Input_Sheet_Nix.xlsx9022020_Input_Sheet_Panchotantrer.xlsx">229022020_Input_Sheet_Nix.xlsx9022020_Input_Sheet_Panchotantrer.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Sabse Bada Kalakar.xlsx">29022020_Input_Sheet_Sabse Bada Kalakar.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Suryaputra_Karna.xlsx">29022020_Input_Sheet_Suryaputra_Karna.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Yam_Hain_Hum(1).xlsx">29022020_Input_Sheet_Yam_Hain_Hum(1).xlsx</option> 
+							  <option value="Input_Sheet_Beechwale_Bapu.xlsx">Input_Sheet_Beechwale_Bapu.xlsx</option> 
+							  <option value="Input_Sheet_Main_Maayek_Chali.xlsx">Input_Sheet_Main_Maayek_Chali.xlsx</option> 
+							  <option value="24042020_Input_Sheet_Aath_BBCEarth 2.xlsx">24042020_Input_Sheet_Aath_BBCEarth 2.xlsx</option> 
+							  <option value="24042020_Input_Sheet_Acquired_SAB.xlsx">24042020_Input_Sheet_Acquired_SAB.xlsx</option> 
+							  <option value="25022020_Input_Baavle_Utaavle.xlsx">25022020_Input_Baavle_Utaavle.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Band_Baja.xlsx">25022020_Input_Sheet_Band_Baja.xlsx</option> 
+							  <option value="25022020_Input_Family_Time_Kapil.xlsx">25022020_Input_Family_Time_Kapil.xlsx</option>
+							  <option value="25022020_Input_Sheet_Icchapyaari_Naagin.xlsx">25022020_Input_Sheet_Icchapyaari_Naagin.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Kuch_Toh_Log.xlsx">25022020_Input_Sheet_Kuch_Toh_Log.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Namune.xlsx">25022020_Input_Sheet_Namune.xlsx</option> 
+							  <option value="25022020_Input_Sheet_My_Name_Ijj_Lakhan.xlsx">25022020_Input_Sheet_My_Name_Ijj_Lakhan.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Originals (1).xlsx">25022020_Input_Sheet_Originals (1).xlsx</option> 
+							  <option value="25022020_Input_Sheet_Partners_Trouble.xlsx">25022020_Input_Sheet_Partners_Trouble.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Sahib Biwi Aur Boss.xlsx">25022020_Input_Sheet_Sahib Biwi Aur Boss.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Shrimaan_Shrimati.xlsx">25022020_Input_Sheet_Shrimaan_Shrimati.xlsx</option> 
+							  <option value="25022020_Input_Sheet_TV_Biwi_Aur_Mein.xlsx">25022020_Input_Sheet_TV_Biwi_Aur_Mein.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Trideviyaan.xlsx">25022020_Input_Sheet_Trideviyaan.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Yaro_Ka_Tashan.xlsx">25022020_Input_Sheet_Yaro_Ka_Tashan.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Yudh.xlsx">25022020_Input_Sheet_Yudh.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Zindagi_Ke_Crossroads.xlsx">25022020_Input_Sheet_Zindagi_Ke_Crossroads.xlsx</option> 
+							  <option value="26022020_Input_Sheet_Gili_Gili_Gappa.xlsx">26022020_Input_Sheet_Gili_Gili_Gappa.xlsx</option> 
+							  <option value="26022020_Input_Sheet_Office_Office.xlsx">26022020_Input_Sheet_Office_Office.xlsx</option> 
+							  <option value="26022020_Input_Sheet_RK_Laxman.xlsx">26022020_Input_Sheet_RK_Laxman.xlsx</option> 
+							  <option value="26022020_Input_Sheet_Sajan_Re_Phir.xlsx">26022020_Input_Sheet_Sajan_Re_Phir.xlsx</option> 
+							  <option value="29022020_Input_Maharana_Pratap.xlsx">29022020_Input_Maharana_Pratap.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Apna News Aayega.xlsx">29022020_Input_Sheet_Apna News Aayega.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Bhanwar.xlsx">29022020_Input_Sheet_Bhanwar.xlsx</option> 
+							  <option value="29022020_Input_Sheet_Bittu Bak Bak.xlsx">29022020_Input_Sheet_Bittu Bak Bak.xlsx</option> 
+							  <option value="Input_Sheet_Rishta_Likhenge.xlsx">Input_Sheet_Rishta_Likhenge.xlsx</option> 
+							  <option value="Input_Sheet_Super_Dancer.xlsx">Input_Sheet_Super_Dancer.xlsx</option> 
+							  <option value="Input_Sheet_Ye_Moh_Moh_Ye_Pyaar_Nahi.xlsx">Input_Sheet_Ye_Moh_Moh_Ye_Pyaar_Nahi.xlsx</option> 
+							  <option value="Input_Sheet_Yeh_Un_Dino.xlsx">Input_Sheet_Yeh_Un_Dino.xlsx</option> 
+							  <option value="OnlyEnglish_27022020_Input_Sheet_BBC_Earth_Batch1.xlsx">OnlyEnglish_27022020_Input_Sheet_BBC_Earth_Batch1.xlsx</option>
+							  <option value="OnlyHindi_06022020_Input_Sheet_Patiala_Babes.xlsx">OnlyHindi_06022020_Input_Sheet_Patiala_Babes.xlsx</option> 
+							  <option value="OnlyHindi_08022020_Input_Sheet_Aladdin.xlsx">OnlyHindi_08022020_Input_Sheet_Aladdin.xlsx</option> 
+							  <option value="OnlyHindi_08022020_Input_Sheet_Ladies_Special_S2.xlsx">OnlyHindi_08022020_Input_Sheet_Ladies_Special_S2.xlsx</option> 
+							  <option value="OnlyHindi_08022020_Input_Sheet_PrithviVallabh.xlsx">OnlyHindi_08022020_Input_Sheet_PrithviVallabh.xlsx</option> 
+							  <option value="OnlyHindi_11022020_Input_Sheet_Gullak_Tripling_LLL.xlsx">OnlyHindi_11022020_Input_Sheet_Gullak_Tripling_LLL.xlsx</option> 
+							  <option value="OnlyHindi_1202020_Input_Sheet_Vignaharta_Ganesha.xlsx">OnlyHindi_1202020_Input_Sheet_Vignaharta_Ganesha.xlsx</option> 
+							  <option value="Only_Hindi_20012020_Input_Sheet_Sony YAY (1).xlsx">Only_Hindi_20012020_Input_Sheet_Sony YAY (1).xlsx</option> 
+							  <option value="06022020_Input_Sheet_Tenali_Bhakharwadi.xlsx">06022020_Input_Sheet_Tenali_Bhakharwadi.xlsx</option> 
+							  <option value="20042020_Input_Sheet_SAB.xlsx">20042020_Input_Sheet_SAB.xlsx</option> 
+							  <option value="06032020_Input_Sheet_Originals_Batch2.xlsx">06032020_Input_Sheet_Originals_Batch2.xlsx</option> 
+							  <option value="08022020_Input_Sheet_Baalveer_Returns.xlsx">08022020_Input_Sheet_Baalveer_Returns.xlsx</option> 
+							  <option value="11022020_Input_Sheet_Alia.xlsx">11022020_Input_Sheet_Alia.xlsx</option> 
+							  <option value="11022020_Input_Sheet_Kuch_Rang_Pyaar_Ke.xlsx">11022020_Input_Sheet_Kuch_Rang_Pyaar_Ke.xlsx</option> 
+							  <option value="11022020_Input_Sheet_UndekhaTadka_TKSS_S1S2.xlsx">11022020_Input_Sheet_UndekhaTadka_TKSS_S1S2.xlsx</option> 
+							  <option value="1202020_Input_Sheet_ Jijaji_Chatt_Par_Hai.xlsx">1202020_Input_Sheet_ Jijaji_Chatt_Par_Hai.xlsx</option> 
+							  <option value="1202020_Input_Sheet_Mere Sai (1) (1).xlsx">1202020_Input_Sheet_Mere Sai (1) (1).xlsx</option> 
+							  <option value="24022020_Input_Sheet_Saat Phero ki Hera Pheri.xlsx">24022020_Input_Sheet_Saat Phero ki Hera Pheri.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Superstar Singer.xlsx">24022020_Input_Sheet_Superstar Singer.xlsx</option> 
+							  <option value="24022020_Input_Sheet_The Drama Company.xlsx">24022020_Input_Sheet_The Drama Company.xlsx</option> 
+							  <option value="24022020_Input_Sheet_English_Batch2.xlsx">24022020_Input_Sheet_English_Batch2.xlsx</option> 
+							  <option value="25022020_Input_Sheet_Manjari.xlsx">25022020_Input_Sheet_Manjari.xlsx</option> 
+							  <option value="12022020_Input_Sheet_Ek_Deewana_Tha.xlsx">12022020_Input_Sheet_Ek_Deewana_Tha.xlsx</option> 
+							  <option value="24022020_Input_Aahat.xlsx">24022020_Input_Aahat.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Adaalat.xlsx">24022020_Input_Sheet_Adaalat.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Comedy_Circus_Naya_Daur.xlsx">24022020_Input_Sheet_Comedy_Circus_Naya_Daur.xlsx</option> 
+							  <option value="14022020_Input_Sheet_SonyMarathi.xlsx">14022020_Input_Sheet_SonyMarathi.xlsx</option> 
+							  <option value="18042020_Input_Sheet_SET_TMKOC (1).xlsx">18042020_Input_Sheet_SET_TMKOC (1).xlsx</option> 
+							  <option value="20012020_Input_Sheet_Acquired Kids.xlsx">20012020_Input_Sheet_Acquired Kids.xlsx</option> 
+							  <option value="1202020_Input_Sheet_Tara_From_Satara.xlsx">1202020_Input_Sheet_Tara_From_Satara.xlsx</option> 
+							  <option value="12022020_Input_Sheet_Ek_Duje_Ke_Vaaste_S1.xlsx">12022020_Input_Sheet_Ek_Duje_Ke_Vaaste_S1.xlsx</option> 
+							  <option value="14022020_Input_Sheet_English.xlsx">14022020_Input_Sheet_English.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Jeannie aur Juju.xlsx">24022020_Input_Sheet_Jeannie aur Juju.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Karamchand.xlsx">24022020_Input_Sheet_Karamchand.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Kutumb.xlsx">24022020_Input_Sheet_Kutumb.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Parvarish 2.xlsx">24022020_Input_Sheet_Parvarish 2.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Peshwa_Bajirao.xlsx">24022020_Input_Sheet_Peshwa_Bajirao.xlsx</option> 
+							  <option value="24022020_Input_Sheet_Crime Patrol.xlsx">24022020_Input_Sheet_Crime Patrol.xlsx</option>  
+                    	</select>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- TODO LIST -->
+		<div id="todo-list" class="row">
+			<div>
+				<!-- <img src="root/vivek/projects/credit_detect/show_set_chandraguptaMaurya_ep11/start_split.jpg"> -->
+				
+<div id="listingTable"></div>
+<a ng-click="prevPage()" id="btn_prev">Prev</a>
+<a ng-click="nextPage()" id="btn_next">Next</a>
+page: <span id="page">{{current_page}}</span>
+				<!-- LOOP OVER THE TODOS IN $scope.todos -->
+					<table style="width:100%;border-style: solid;">
+					  <tr>
+					    <th>ID</th>
+					    <th>First url</th>
+					    <th>End url</th>
+					    <th>Video length</th>
+					    <th>Json url</th>
+					    <th>Status</th>
+					    <th>Edited before</th>
+					  </tr>
+				<!-- <div ng-repeat="todo in todos"> -->
+					  <tr ng-repeat="todo in todos">
+					    <td>{{todo.content_id}}</td>
+					    <td>
+					    	<a href="{{todo.first_url}}" target="_blank">view</a>
+					    </td>
+					    <td>
+    						<a href="{{todo.second_url}}" target="_blank">view</a>
+					    </td>
+					    <td>{{todo.video_length}}</td>
+					    <td>
+					   		<a href="/report.html?cid={{todo.content_id}}" target="_blank">Report Url</a>
+					   	</td>
+					    <td>{{todo.status}}</td>
+					    <td>{{todo.isedited}} <button ng-click="setasdone(todo.content_id,todo.status)"> {{ (todo.status == 'worked') ? 'Mark Discard' : 'Mark UnDiscard'}} </button></td>
+					  </tr>
+					</table>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="scotchTodo">
+<head>
+<meta charset="utf-8">
+<title>Mytoch Wtag</title>
+<style>
+    /* Add some padding on document's body to prevent the content
+    to go underneath the header and footer */
+    body{        
+        padding-top: 60px;
+        padding-bottom: 40px;
+        margin: 0px;
+    }
+    .topcontainer{
+        width: 100%;
+        margin: 0 auto; /* Center the DIV horizontally */
+    }
+    .fixed-header, .fixed-footer{
+        width: 100%;
+        position: fixed;        
+        background: #333;
+        padding: 5px 0;
+        color: #fff;
+    }
+    .fixed-header{
+        top: 0;
+    }
+    .fixed-footer{
+        bottom: 0;
+    }    
+    /* Some more styles to beutify this example */
+    nav a{
+        color: #fff;
+        text-decoration: none;
+        padding: 7px 25px;
+        display: inline-block;
+    }
+    .container p{
+        line-height: 200px; /* Create scrollbar to test positioning */
+    }
+
+    * { user-select: none; }
+
+    .container {
+      width: 100% !important;
+      height: 100% ;
+      max-width: 100%;
+      background: rgba(0, 0, 0, 0.05);
+      /*border: 1px solid blue;*/
+      /*position: absolute;*/
+      overflow: auto;
+      /*padding-bottom: 40px;*/
+/*      top: 15%;
+      left: 15%;
+
+*/    }
+    
+    
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- Angular Material Library -->
+ 
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="js/controllers/wtag.js"></script> <!-- load up our controller -->
+    <script src="js/services/todos.js"></script> <!-- load our todo service -->
+    <script src="js/core.js"></script> <!-- load our main application -->
+
+</head>
+<body ng-controller="wtagController">
+    
+    <div class="fixed-header">
+        <div class="topcontainer">
+            <nav>
+                <input type="text" name="" ng-model="link" placeholder="Enter json url" style="margin-left: 10px; width: 600px;color: black" />
+                <button ng-click="loadJson()" style="color: blue;">Load JSON</button>
+                <button ng-click="saveJson()" style="color: blue;">Save JSON</button>
+                <img src="loading_build.svg" ng-if="apimsg == 'Loading JSON ....' ||  apimsg == 'Saving JSON ....'" style="width: 35px;">
+                {{ apimsg }}
+            </nav>
+        </div>
+    </div>  
+    <div class="container">
+        <label style="float: left;" ng-repeat="frame in frames" > 
+                <img src="{{ frame.gif }}" draggable="false" ondragstart="return false;" style="max-width: 120px;"> 
+                <br>
+                <input type="text" ng-model="frame.object_label" name="" style="position:relative;bottom:0px;color: black;width: 120px">
+        </label>
+    </div>  
+</body>
+
+</html>

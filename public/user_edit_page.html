@@ -1,0 +1,152 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="scotchTodo">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+	<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+	<title>JL Dashboard</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		html 					{ overflow-y:scroll; }
+		body 					{ padding-top:0px; }
+		#todo-list 				{ margin-bottom:30px; }
+		#todo-form 	 			{ margin-bottom:50px; }
+		table, th, td {
+  			border: 1px solid black;
+  			border-collapse: collapse;
+			}
+		th, td {
+		  padding: 5px;
+		  text-align: left;
+		}
+
+		.login {
+			width: 300px;
+			height: 200px;
+			position: absolute;
+			top:0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			text-align: center;
+			border-style: solid;
+			border-color: gray;
+			border-width: 1px;
+			margin: auto;
+			margin-top: 100px;
+		}
+	</style>
+
+	<!-- SPELLS -->
+	<!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- Angular Material Library -->
+ 
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+	<script src="js/controllers/main.js"></script> <!-- load up our controller -->
+	<script src="js/services/todos.js"></script> <!-- load our todo service -->
+	<script src="js/core.js"></script> <!-- load our main application -->
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.567.0.min.js"></script>
+
+
+
+</head>
+<!-- SET THE CONTROLLER -->
+<body id="mainbody" style="font-family: 'Lato', sans-serif;" ng-controller="mainController">
+	
+	<div ng-show="isLoggedIn">
+			<div class="container" style="position: absolute;float: left;left: 10px;">
+			<div style="width: 100%" class="row">
+				<!-- <h3 style="float: left;">Total Videos <b style="color: blue">{{ states.totalvideo }}</b> &nbsp;&nbsp;</h3> -->
+				<h3 style="float: left;">Total Done <b style="color: blue">{{ user_total_done }}</b> &nbsp;&nbsp;</h3>
+				<h3 style="float: left;">Total Pending <b style="color: blue">{{ user_total_pending }} &nbsp;&nbsp;</b></h3>
+				<!-- <h3 style="float: left;">Total Failed <b style="color: blue">{{ states.discardvideo }} &nbsp;&nbsp;</b></h3> -->
+				<h3 style="float: left;"><button style="margin-top: 0px;" ng-click="logout()">Logout</button></h3>
+			</div>
+			<div class="row">
+				<table style="border-style: none;">
+					<tr>
+						<td style="width: 130px;">
+							Auto Refresh in {{ in_sec }}
+						</td>
+						<td>
+							<button ng-click="getStates()">Refresh</button>
+						</td>
+						<td>
+							<select class="form-control" ng-model="isedited" ng-change="updateList()">
+		                    <option value="completed">Completed Videos</option>
+		                    <option value="pending">Pending Videos</option>
+		                    <!-- <option value="failed">Failed Videos</option> -->
+		                	</select>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="todo-list" class="row">
+				<div>
+					<div id="listingTable"></div>
+					<a ng-click="prevPage()" id="btn_prev">Prev</a>
+					<a ng-click="nextPage()" id="btn_next">Next</a>
+					page: <span id="page">{{current_page}}</span>
+						<table style="width:100%;border-style: solid;">
+						  <tr>
+						    <th>Video Id</th>
+						    <th>Video url</th>
+						    <th>Json url</th>
+						    <th>Video Length</th>
+						    <th>Time</th>
+						    <th>Status</th>
+						    <th>Report</th>
+						    <th>Edit Report</th>
+						    <th>Review Status</th>
+						  </tr>
+						  <tr ng-repeat="todo in all_todos">
+						    <td>{{todo.videoId}}</td>
+						    <td>
+						    	<a href="{{todo.file_url}}" target="_blank">VideoLink</a>
+						    </td>
+						    <td>
+						   		<a href="{{todo.json_url}}" target="_blank">view</a> 
+						   	</td>
+						   	<td>{{todo.video_length}}</td>
+						   	<td>{{todo.time_taken}}</td>
+						    <td>{{todo.status}}</td>
+						    <td><a href="/report.html?videoId={{todo.videoId}}" target="_blank">Report Url</a></td>
+						    <td><a href="/main_edit_report.html?videoId={{todo.videoId}}" target="_blank">Edit Report Url</a></td>
+							<td>{{todo.reviewStatus}}</td>   
+						 </tr>
+						</table>
+				</div>
+			</div>
+		</div>
+		<iframe src="/queue.html" style="float:left;right: 0px;position: absolute;" width="550px;" height="700px"></iframe>	
+	</div>
+
+	<script type="text/javascript">
+
+		var cIds = new RegExp('[\?&]email=([^&#]*)').exec(window.location.href);//find query reuquested Video Id Perameter
+		var cId = "a@g.com";
+		if(cIds != undefined){
+		if(cIds.length > 1){
+			  cId = cIds[1];
+		  }
+		}
+		setTimeout(function() {
+			angular.element(document.getElementById('mainbody')).scope().loadEmailReport(cId);  	
+		},200);
+	</script>
+</body>
+</html>

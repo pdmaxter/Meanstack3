@@ -1,0 +1,94 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="scotchTodo">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+	<title>AI DATA</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		html 					{ overflow-y:scroll; }
+		body 					{ padding-top:0px; }
+		#todo-list 				{ margin-bottom:30px; }
+		#todo-form 	 			{ margin-bottom:50px; }
+		table, th, td {
+  			border: 1px solid black;
+  			border-collapse: collapse;
+			}
+		th, td {
+		  padding: 5px;
+		  text-align: left;
+		}
+	</style>
+
+	<!-- SPELLS -->
+	<!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- Angular Material Library -->
+ 
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+	<script src="js/controllers/queue.js"></script> <!-- load up our controller -->
+	<script src="js/services/todos.js"></script> <!-- load our todo service -->
+	<script src="js/core.js"></script> <!-- load our main application -->
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.567.0.min.js"></script>
+
+
+
+</head>
+<!-- SET THE CONTROLLER -->
+<body ng-controller="mainController">
+	<div class="container">
+
+		<div class="row">
+			<table style="border-style: none;">
+				<tr>
+					<td style="width: 130px;">
+						Auto Refresh in {{ in_sec }}
+					</td>
+					<td>
+						<button ng-click="create_queue()">Create New Queue</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- TODO LIST -->
+		<div id="todo-list" class="row">
+			<div>
+					<table style="width:100%;border-style: solid;">
+					  <tr>
+					  	<th style="max-width:45px;text-align: center;">Queue NO</th>
+					    <th style="text-align: center;">Queue ID</th>
+					    <th style="text-align: center;">Status</th>
+					    <th style="max-width:45px;text-align: center;">Total Videos</th>
+					    <th style="max-width:55px;text-align: center;">Total Completed</th>
+					    <th style="max-width:45px;text-align: center;">Total Failed</th>
+					    <th style="text-align: center;">Action</th>
+					  </tr>
+					  <tr ng-repeat="queue in queues track by $index">
+					  	<td style="text-align: center;">{{ $index }}</td>
+					    <td style="text-align: center;">{{queue.queueId}}</td>
+					    <td style="text-align: center;">{{get_status(queue.status)}}</td>
+					    <td style="text-align: center;">{{queue.total}}</td>
+					    <td style="text-align: center;">{{queue.total_completed}}</td>
+					    <td style="text-align: center;">{{queue.total_failed}}</td>
+					    <td style="text-align: center;"><a href="" ng-click="UpdateQueue(queue)"> {{ (queue.status == 1) ? 'Stop Queue' : 'Start Queue' }} </a></td>
+					  </tr>
+					</table>
+		</div>
+	</div>
+</body>
+</html>

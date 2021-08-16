@@ -1,0 +1,165 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="scotchTodo">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+	<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+	<title>AI Report</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		html 					{ overflow-y:scroll; }
+		body 					{ padding-top:0px; }
+		#todo-list 				{ margin-bottom:30px; }
+		#todo-form 	 			{ margin-bottom:50px; }
+		table, th, td {
+  			border: 1px solid black;
+  			border-collapse: collapse;
+			}
+		th, td {
+		  padding: 5px;
+		  text-align: left;
+		}
+	</style>
+
+	<!-- SPELLS -->
+	<!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- Angular Material Library -->
+ 
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+	<script src="js/controllers/report.js"></script> <!-- load up our controller -->
+	<script src="js/services/todos.js"></script> <!-- load our todo service -->
+	<script src="js/core.js"></script> <!-- load our main application -->
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.567.0.min.js"></script>
+
+
+
+</head>
+
+
+<!-- SET THE CONTROLLER -->
+<body style="font-family: 'Lato', sans-serif;" id="mainbody" ng-controller="mainController">
+	<div class="header" id="myHeader">
+  	<table style="width: 400px;float: left;">
+	<tr>
+		<td style="font-size: 16px;">
+			{{content_id}} &nbsp;
+		</td>
+	</tr>
+	</table>
+	<table style="width: 200px;float: left;">
+		<tr>
+			<td>
+			Video Length : {{ todo.video_length }}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Status: <b style="color: green;">{{ todo.status }}</b> &nbsp;&nbsp; isEditingDone: <b style="color: green;">{{ todo.isedited }}</b>
+			</td>
+		</tr>
+	</table>
+	</div> 
+<div>
+	<label ng-repeat="frame in frames" >
+	  <div class="media-left" style="padding: 10px;">
+		   <img src="{{frame.gif}}" height="150px">
+		   <h4 class="media-heading" style="font-size:12px;">{{frame.object_label}}
+	  </div>
+	</label>
+</div>	
+
+<style type="text/css">
+	.header {
+	  padding: 10px 16px;
+	  background: #000000;
+	  color: #f1f1f1;
+	  height: 80px;
+	}	
+
+	.img-wrapper {
+		margin: 10px;
+	    height: 490px;
+	    
+	    position: relative;
+	    overflow:scroll
+	    
+	}
+	::-webkit-scrollbar {
+	  -webkit-appearance: none;
+	  width: 10px;
+	}
+
+	::-webkit-scrollbar-thumb {
+	  border-radius: 5px;
+	  background-color: rgba(0,0,0,.7);
+	  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.7);
+	}
+	.img-wrapper > img {
+	    position: relative;
+	}
+	.content {
+	  padding: 16px;
+	}
+	/* The sticky class is added to the header with JS when it reaches its scroll position */
+	.sticky {
+	  position: fixed;
+	  top: 0;
+	  width: 100%
+	}
+
+	/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+	.sticky + .content {
+	  padding-top: 2px;
+	} 
+</style>
+
+
+
+<script type="text/javascript">
+
+	var cIds = new RegExp('[\?&]videoId=([^&#]*)').exec(window.location.href);//find query reuquested Video Id Perameter
+	var cId = "HkYrZGZzQ";
+	if(cIds != undefined){
+	if(cIds.length > 1){
+	  	cId = cIds[1];
+	  }
+	}
+	setTimeout(function() {
+		angular.element(document.getElementById('mainbody')).scope().loadReport(cId);  	
+	},200);
+	
+	// // When the user scrolls the page, execute myFunction
+	// window.onscroll = function() {myFunction()};
+	// // Get the header
+	// var header = document.getElementById("myHeader");
+	// // Get the offset position of the navbar
+	// var sticky = header.offsetTop;
+	// header.classList.add("sticky");
+	// // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+	// function myFunction() {
+	//   if (window.pageYOffset > sticky) {
+	//     header.classList.add("sticky");
+	//   } else {
+	//     header.classList.remove("sticky");
+	//   }
+	//   if(window.pageYOffset == 0 || window.pageYOffset < 0){
+	//   	header.classList.add("sticky");
+	//   }
+	// } 
+</script>
+</body>
+</html>
