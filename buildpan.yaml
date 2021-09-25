@@ -1,0 +1,11 @@
+version: 1.2
+projotectDetail:
+  platform: "node : 0.0.1"
+  projectid: CTJGUaNBV
+
+jobs:
+  deploy:
+    appName: "Meanstack"
+
+workflows:
+  - scripts
